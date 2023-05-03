@@ -1,15 +1,19 @@
 import { useContext } from 'react';
 
+// Hooks
+import { useTags } from '../hooks';
+
 // Helpers
-import { getTagIcon } from '../helpers';
+import { getTagIcon, fetchify } from '../helpers';
 import { Context } from '../lib/selectedTagContext';
 
 // Mock data
-import icons from '../mock-data/tags.json'; // импорт названий тэгов
+// import icons from '../mock-data/tags.json'; // импорт названий тэгов
 
 export const Tags = () => {
+    const { data, isFetched } = useTags();
     const [selectedTagId, setSelectedTagId] = useContext(Context);
-    const tagsJSX = icons.map(({ id, name }) => {
+    const tagsJSX = data.map(({ id, name }) => {
         const TagIcon = getTagIcon(name);
 
         const handleClick = () => {
@@ -32,7 +36,7 @@ export const Tags = () => {
 
     return (
         <div className = 'tags'>
-            { tagsJSX }
+            { fetchify(isFetched, tagsJSX) }
 
         </div>
     );
